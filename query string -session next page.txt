@@ -1,0 +1,17 @@
+form 1 -
+ label
+textbox
+submit button
+
+protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("webform2.aspx?myname="+TextBox1.Text.ToString());
+        }
+
+
+form 2- label
+
+ protected void Page_Load(object sender, EventArgs e)
+        {
+            Label2.Text = "welcome" + Request.QueryString["myname"];
+        }

@@ -1,0 +1,121 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebApplication1.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Message Display</title>
+    <style type="text/css">
+        .labelStyle {
+            font-weight: normal;
+            font-style: normal;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h2>Message Display</h2>
+        <div>
+            <label for="txtName">Name:</label>
+            <asp:TextBox ID="txtName" runat="server" Width="200px"></asp:TextBox>
+        </div>
+        <div>
+            <label for="txtMessage">Message:</label>
+            <asp:TextBox ID="txtMessage" runat="server" Width="200px" TextMode="MultiLine"></asp:TextBox>
+        </div>
+        <div>
+            <h4>Formatting:</h4>
+            <asp:CheckBox ID="chkBold" runat="server" Text="Bold" />
+            <asp:CheckBox ID="chkItalic" runat="server" Text="Italic" />
+            <asp:CheckBox ID="chkUnderline" runat="server" Text="Underline" />
+            <br />
+            <asp:Label ID="lblColor" runat="server" Text="Color:">Black</asp:Label>
+            <asp:DropDownList ID="ddlColor" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlColor_SelectedIndexChanged">
+                <asp:ListItem Text="Black" Value="Black" />
+                <asp:ListItem Text="Red" Value="Red" />
+                <asp:ListItem Text="Green" Value="Green" />
+                <asp:ListItem Text="Blue" Value="Blue" />
+            </asp:DropDownList>
+        </div>
+        <div>
+            <asp:Button ID="btnDisplay" runat="server" Text="Display" OnClick="btnDisplay_Click" />
+            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
+            <asp:Button ID="btnExit" runat="server" Text="Exit" OnClick="btnExit_Click" />
+        </div>
+        <br />
+        <asp:Label ID="lblResult" runat="server" CssClass="labelStyle"></asp:Label>
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public partial class Default : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void btnDisplay_Click(object sender, EventArgs e)
+    {
+        string name = txtName.Text;
+        string message = txtMessage.Text;
+
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(message))
+        {
+            lblResult.Text = "Please enter your name and message.";
+            return;
+        }
+
+        lblResult.Text = name + ": " + message;
+
+        string style = "";
+        if (chkBold.Checked)
+        {
+            style += "font-weight: bold;";
+        }
+        if (chkItalic.Checked)
+        {
+            style += "font-style: italic;";
+        }
+        if (chkUnderline.Checked)
+        {
+            style += "text-decoration: underline;";
+        }
+        lblResult.CssClass = style;
+
+        lblResult.ForeColor = System.Drawing.ColorTranslator.FromHtml(ddlColor.SelectedValue);
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        txtName.Text = "";
+        txtMessage.Text = "";
+        lblResult.Text = "";
+        lblResult.CssClass = "labelStyle";
+        ddlColor.SelectedIndex = 0;
+        chkBold.Checked = false;
+        chkItalic.Checked = false;
+        chkUnderline.Checked = false;
+    }
+
+    protected void btnExit_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("~/Exit.htm"); // Replace

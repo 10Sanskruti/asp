@@ -1,0 +1,114 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebApplication1.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Item Transfer</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h2>Item Transfer</h2>
+        <div>
+            <h4>Source List</h4>
+            <asp:ListView ID="lvSource" runat="server" DataKeyNames="ID">
+                <LayoutTemplate>
+                    <ul>
+                        <asp:ListItemTemplate>
+                            <li><asp:Label ID="lblSourceItem" runat="server" Text='<%# Eval("Text") %>'></asp:Label></li>
+                        </asp:ListItemTemplate>
+                    </ul>
+                </LayoutTemplate>
+                <ItemTemplate>
+                    <asp:HiddenField ID="hfSourceID" runat="server" Value='<%# Eval("ID") %>' />
+                </ItemTemplate>
+            </asp:ListView>
+        </div>
+        <div>
+            <h4>Destination List</h4>
+            <asp:ListView ID="lvDestination" runat="server" DataKeyNames="ID">
+                <LayoutTemplate>
+                    <ul>
+                        <asp:ListItemTemplate>
+                            <li><asp:Label ID="lblDestItem" runat="server" Text='<%# Eval("Text") %>'></asp:Label></li>
+                        </asp:ListItemTemplate>
+                    </ul>
+                </LayoutTemplate>
+                <ItemTemplate>
+                    <asp:HiddenField ID="hfDestID" runat="server" Value='<%# Eval("ID") %>' />
+                </ItemTemplate>
+            </asp:ListView>
+        </div>
+        <div>
+            <asp:Button ID="btnMove" runat="server" Text="Move Selected" OnClick="btnMove_Click" />
+            <asp:Button ID="btnMoveAll" runat="server" Text="Move All" OnClick="btnMoveAll_Click" />
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+public partial class Default : System.Web.UI.Page
+{
+    protected List<Item> sourceItems;
+    protected List<Item> destinationItems;
+
+    public class Item
+    {
+        public int ID { get; set; }
+        public string Text { get; set; }
+    }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            sourceItems = new List<Item>();
+            sourceItems.Add(new Item { ID = 1, Text = "Item 1" });
+            sourceItems.Add(new Item { ID = 2, Text = "Item 2" });
+            sourceItems.Add(new Item { ID = 3, Text = "Item 3" });
+
+            destinationItems = new List<Item>();
+
+            lvSource.DataSource = sourceItems;
+            lvSource.DataBind();
+            lvDestination.DataSource = destinationItems;
+            lvDestination.DataBind();
+        }
+    }
+
+    protected void btnMove_Click(object sender, EventArgs e)
+    {
+        List<Item> selectedItems = new List<Item>();
+
+        foreach (ListViewItem item in lvSource.SelectedItems)
+        {
+            int id = int.Parse(item.FindControl("hfSourceID").ClientID);
+            Item selectedItem = sourceItems.Find(i => i.ID == id);
+            selectedItems.Add(selectedItem);
+        }
+
+        foreach (Item item in selectedItems)
+        {
+            sourceItems.Remove(item);
+            destinationItems.Add(item);
+        }
+
+        lvSource.DataSource = sourceItems;
+        lvSource.DataBind();
+        lvDestination.DataSource = destinationItems;
+        lvDestination.DataBind();
+
+        lvSource.ClearSelection();
+    }
+
+    protected void btnMoveAll_Click(object sender, EventArgs e)
+    {
+        destinationItems.AddRange(sourceItems);
+        sourceItems.Clear();
+
+        lvSource.DataSource = sourceItems;
+        lvSource.DataBind();
+        lvDestination.DataSource = destinationItems

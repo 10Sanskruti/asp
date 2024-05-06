@@ -1,0 +1,123 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebApplication1.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Employee Selection</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h2>Employee Selection</h2>
+        <div>
+            <h4>List of Employees:</h4>
+            <asp:ListBox ID="lbEmployees" runat="server" SelectionMode="Multiple" Rows="10" Width="200px"></asp:ListBox>
+        </div>
+        <div>
+            <h4>Selected Employees:</h4>
+            <asp:TextBox ID="txtSelectedEmployees" runat="server" TextMode="MultiLine" Width="200px" Height="100px"></asp:TextBox>
+        </div>
+        <div>
+            <asp:Button ID="btnAddSelected" runat="server" Text="Add Selected" OnClick="btnAddSelected_Click" />
+            <asp:Button ID="btnAddAll" runat="server" Text="Add All" OnClick="btnAddAll_Click" />
+            <asp:Button ID="btnClear" runat="server" Text="Clear" OnClick="btnClear_Click" />
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+public partial class Default : System.Web.UI.Page
+{
+    protected List<string> employeeList;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            employeeList = new List<string>();
+            employeeList.Add("Employee 1");
+            employeeList.Add("Employee 2");
+            employeeList.Add("Employee 3");
+            employeeList.Add("Employee 4");
+            employeeList.Add("Employee 5");
+
+            lbEmployees.DataSource = employeeList;
+            lbEmployees.DataBind();
+        }
+    }
+
+    protected void btnAddSelected_Click(object sender, EventArgs e)
+    {
+        StringBuilder selectedEmployees = new StringBuilder();
+
+        foreach (ListItem item in lbEmployees.SelectedItems)
+        {
+            selectedEmployees.AppendLine(item.Text);
+        }
+
+        txtSelectedEmployees.Text += selectedEmployees.ToString();
+    }
+
+    protected void btnAddAll_Click(object sender, EventArgs e)
+    {
+        StringBuilder allEmployees = new StringBuilder();
+
+        foreach (string employee in employeeList)
+        {
+            allEmployees.AppendLine(employee);
+        }
+
+        txtSelectedEmployees.Text += allEmployees.ToString();
+    }
+
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+        txtSelectedEmployees.Text = "";
+        lbEmployees.ClearSelection();
+    }
+}
+
+
+
+This program defines:
+
+A ListBox named lbEmployees to display the list of employees.
+A TextBox named txtSelectedEmployees with TextMode="MultiLine" to show the selected employees.
+Three buttons:
+btnAddSelected: Adds only the selected employees from the ListBox to the TextBox.
+btnAddAll: Adds all employees from the ListBox to the TextBox.
+btnClear: Clears the TextBox and deselects all items in the ListBox.
+The program utilizes a List<string> named employeeList to store the employee names. You can replace this with data retrieved from a database or any other source.
+
+
+
+
+
+
+
+
+
+
+
+
+CODE: 
+using System; 
+namespace list 
+{ 
+    public partial class listselect : System.Web.UI.Page 
+         { 
+protected void Page_Load(object sender, EventArgs e) 
+{ 
+} 
+protected void btnAdd_Click(object sender, EventArgs e) 
+{
+int i; for (i = 0; i < lstEmployee.Items.Count; i++)
+ {
+ 			if (lstEmployee.Items[i].Selected == true) 
+txtEmployee.Text += lstEmployee.Items[i].Text + "\n"; 
+} 
+} 
+         } 
+}

@@ -1,0 +1,21 @@
+file upload
+
+
+
+
+
+
+ calender
+text box 
+image button
+protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+        {
+            Calendar1.Visible= true;
+        }
+
+        protected void Calendar1_SelectionChanged(object sender, EventArgs e)
+        {
+            TextBox1.Text = Calendar1.SelectedDate.ToString("dd-MM-yyyy");
+            Calendar1.Visible = false;
+        }
+    }

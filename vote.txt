@@ -1,0 +1,102 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebApplication2.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Book Rating</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <h2>How is the book "ASP.NET with C# by Vipul Prakashan"?</h2>
+        <fieldset>
+            <asp:RadioButton ID="rbGood" runat="server" Text="Good" GroupName="rating" />
+            <asp:RadioButton ID="rbSatisfactory" runat="server" Text="Satisfactory" GroupName="rating" />
+            <asp:RadioButton ID="rbBad" runat="server" Text="Bad" GroupName="rating" />
+        </fieldset>
+        <br />
+        <asp:Button ID="btnVote" runat="server" Text="VOTE" OnClick="btnVote_Click" />
+        <br />
+        <br />
+        <h4>Results:</h4>
+        <asp:Label ID="lblGood" runat="server" Text="0%"></asp:Label> (Good)
+        <br />
+        <asp:Label ID="lblSatisfactory" runat="server" Text="0%"></asp:Label> (Satisfactory)
+        <br />
+        <asp:Label ID="lblBad" runat="server" Text="0%"></asp:Label> (Bad)
+    </form>
+    <script type="text/javascript">
+        // Disable vote button initially
+        window.onload = function () {
+            document.getElementById('<%= btnVote.ClientID %>').disabled = true;
+        }
+    </script>
+</body>
+</html>
+
+
+
+public partial class Default : System.Web.UI.Page
+{
+    private int totalVotes = 0;
+    private int goodVotes = 0;
+    private int satisfactoryVotes = 0;
+    private int badVotes = 0;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        // Disable vote button initially on page load
+        btnVote.Enabled = false;
+    }
+
+    protected void btnVote_Click(object sender, EventArgs e)
+    {
+        string selectedRating = "";
+
+        if (rbGood.Checked)
+        {
+            selectedRating = "Good";
+            goodVotes++;
+        }
+        else if (rbSatisfactory.Checked)
+        {
+            selectedRating = "Satisfactory";
+            satisfactoryVotes++;
+        }
+        else if (rbBad.Checked)
+        {
+            selectedRating = "Bad";
+            badVotes++;
+        }
+
+        totalVotes++;
+
+        // Calculate percentages
+        double goodPercent = (double)goodVotes / totalVotes * 100;
+        double satisfactoryPercent = (double)satisfactoryVotes / totalVotes * 100;
+        double badPercent = (double)badVotes / totalVotes * 100;
+
+        // Update labels with percentages
+        lblGood.Text = goodPercent.ToString("0.0") + "%";
+        lblSatisfactory.Text = satisfactoryPercent.ToString("0.0") + "%";
+        lblBad.Text = badPercent.ToString("0.0") + "%";
+
+        // Disable vote button after first vote
+        btnVote.Enabled = false;
+    }
+}
+
+
+
+This program includes:
+
+Radio buttons named rbGood, rbSatisfactory, and rbBad for user selection.
+A btnVote button to submit the vote.
+Labels lblGood, lblSatisfactory, and lblBad to display the vote percentages.
+JavaScript code to initially disable the vote button until a radio button is selected.
+The code behind the program:
+
+Tracks the total votes and individual votes for each category.
+Calculates percentages after a vote is submitted.
+Updates the labels with the vote percentages.
+Disables the vote button after the first vote to prevent multiple submissions.

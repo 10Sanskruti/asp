@@ -1,0 +1,15 @@
+login registration
+table 
+textbox
+button- submit
+html (input) -reset
+validation buttons-
+required field
+regular expresssion
+compare validator
+
+ protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Write("Your registration is successful");
+        }
+    }

@@ -1,0 +1,15 @@
+view state /last session 
+
+one textbox , clear&submit-button , restore-button
+
+protected void Button1_Click(object sender, EventArgs e)
+        {
+            ViewState["myvalue"] = TextBox1.Text.ToString();
+            TextBox1.Text = string.Empty;
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            if(ViewState["myvalue"]!=null)
+            TextBox1.Text = ViewState["myvalue"].ToString();
+        } 
